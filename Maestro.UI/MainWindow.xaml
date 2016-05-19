@@ -1,0 +1,39 @@
+﻿<Window x:Class="Maestro.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Maestro.UI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="900">
+    <Grid>
+        <Menu x:Name="menu" Height="30" VerticalAlignment="Top">
+            <MenuItem Header="File" Height="30" Width="35">
+                <MenuItem Header="Open" HorizontalAlignment="Left" Width="131"/>
+                <MenuItem Header="Save" HorizontalAlignment="Left" Width="140"/>
+                <Separator />
+                <MenuItem Header="Exit" HorizontalAlignment="Left" Width="140"/>
+            </MenuItem>
+            <MenuItem Header="Help" Width="35"/>
+        </Menu>
+        <ToolBarPanel Height="61" VerticalAlignment="Top" Margin="-7,30,0,0">
+            <ToolBar Band="1" BandIndex="1" x:Name="toolBar" HorizontalAlignment="Left" Width="879" Height="61" Margin="10,0,0,0">
+                <Button x:Name="button" Content="Pencil" Height="55" VerticalAlignment="Top" Width="75" Margin="0,0,0,-5"/>
+                <Button x:Name="button1" Content="Fill" Height="55" VerticalAlignment="Top" Width="75" Margin="0,0,0,-5"/>
+                <Button x:Name="button2" Content="Text" Height="55" VerticalAlignment="Top" Width="75" Margin="0,0,0,-5"/>
+                <Button x:Name="button3" Content="Color picker" Height="55" VerticalAlignment="Top" Width="75" Margin="0,0,0,-5"/>
+                <Button x:Name="button4" Content="Eraser" Height="55" VerticalAlignment="Top" Width="75" Margin="0,0,0,-5"/>
+                <Button x:Name="button5" Content="Magnifier" Height="55" VerticalAlignment="Top" Width="75" Margin="0,0,0,-5"/>
+                <Separator/>
+                <Button x:Name="button12" Content="Line" Height="55" VerticalAlignment="Top" Width="75" Margin="0,0,0,-5"/>
+                <Button x:Name="button13" Content="Rectangle" Height="55" VerticalAlignment="Top" Width="75" Margin="0,0,0,-5"/>
+                <Button x:Name="button14" Content="Ellipse" Height="55" VerticalAlignment="Top" Width="75" Margin="0,0,0,-5"/>
+                <Separator/>
+                <Button x:Name="btn2" Content="Edit Colors" Height="55" VerticalAlignment="Top" Width="75" Margin="0,0,0,-5"/>
+                <Button x:Name="btn22" Content="Current Color" Height="55" VerticalAlignment="Top" Width="75" Margin="0,0,0,-5"/>
+            </ToolBar>
+        </ToolBarPanel>
+        <Canvas HorizontalAlignment="Left" Height="358" Margin="0,91,0,0" VerticalAlignment="Top" Width="892"/>
+        <StatusBar HorizontalAlignment="Left" Height="20" Margin="0,449,0,0" VerticalAlignment="Top" Width="892"/>
+    </Grid>
+</Window>
