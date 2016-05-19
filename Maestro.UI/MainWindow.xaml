@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="900">
 	<Grid>
-		<Menu x:Name="menu" VerticalAlignment="Top">
+		<Menu x:Name="menu" Grid.Row="1" VerticalAlignment="Top">
 			<MenuItem Header="File">
 				<MenuItem Header="Open" HorizontalAlignment="Left"/>
 				<MenuItem Header="Save" HorizontalAlignment="Left"/>
@@ -17,10 +17,10 @@
 			</MenuItem>
 			<MenuItem Header="Help"/>
 		</Menu>
-		<ToolBarPanel Height="66" VerticalAlignment="Top" Margin="-7,21,0,0">
+		<ToolBarPanel Height="66" Grid.Row="2" VerticalAlignment="Top" Margin="-7,21,0,0">
 			<ToolBar x:Name="toolBar" HorizontalAlignment="Left" Width="879" Height="66" Margin="10,0,0,0">
 				<Grid Width="103" Margin="0,0,0,-2">
-					<Button x:Name="pencil_button" Height="24" Width="24" VerticalAlignment="Top" Margin="7,4,72,0">
+					<Button x:Name="pencil_button" Height="24" Width="24" VerticalAlignment="Top" Margin="7,4,72,0" Click="pencil_button_Click">
 						<Image Source="pack://application:,,,/Resources/pencil.png"/>
 					</Button>
 					<Button x:Name="eraser_button" Height="24" Width="24" VerticalAlignment="Top" Margin="7,33,72,0">
@@ -53,8 +53,8 @@
 				</Grid>
 				<Separator/>
 				<Grid Width="67">
-					<xctk:ColorPicker x:Name="ClrPcker_Background" Margin="10,5,10,32"/>
-					<ComboBox x:Name="comboBox" Height="24" Margin="10,34,0,0" SelectedIndex="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="47">
+					<xctk:ColorPicker x:Name="ColorPicker" SelectedColor="Black" SelectedColorChanged="ColorPicker_SelectedColorChanged" Margin="10,5,10,32"/>
+					<ComboBox x:Name="ThicknessChooser" Height="24" Margin="10,34,0,0" SelectedIndex="0" SelectionChanged="ThicknessChooser_SelectionChanged" VerticalAlignment="Top" HorizontalAlignment="Left" Width="47">
 						<ComboBoxItem Content="1px" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="3px" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="5px" HorizontalAlignment="Left" Width="118"/>
@@ -79,7 +79,11 @@
 				</Grid>
 			</ToolBar>
 		</ToolBarPanel>
-		<Canvas HorizontalAlignment="Left" Height="362" Margin="0,87,0,0" VerticalAlignment="Top" Width="892"/>
-		<StatusBar HorizontalAlignment="Left" Height="20" Margin="0,449,0,0" VerticalAlignment="Top" Width="892"/>
+		<Canvas x:Name="canvas" Grid.Row="3" HorizontalAlignment="Left" Height="362" Margin="0,87,0,0" PreviewMouseDown="Canvas_MouseDown" PreviewMouseMove="canvas_MouseMove" PreviewMouseUp="Canvas_MousenUp" VerticalAlignment="Top" Width="892">
+			<Canvas.Background>
+				<SolidColorBrush Color="White"></SolidColorBrush>
+			</Canvas.Background>
+		</Canvas>
+		<StatusBar HorizontalAlignment="Left" Grid.Row="4" Height="20" Margin="0,449,0,0" VerticalAlignment="Top" Width="892"/>
 	</Grid>
 </Window>

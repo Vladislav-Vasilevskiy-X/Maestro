@@ -16,26 +16,92 @@ using System.Windows.Ink;
 
 namespace Maestro.UI
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
-    {
-        InkCanvas incCanvas = new InkCanvas();
-        string DrawingTool;
-        double X1, X2, Y1, Y2, StrokeThickness = 1;
-        Line NewLine;
-        Ellipse NewEllipse;
-        Point StartPoint, PreviousContactPoint, CurrentContactPoint;
-        Polyline Pencil;
-        Rectangle NewRectangle;
-        Color BorderColor = Colors.Black, FillColor;
-        uint PenID, TouchID;
+	/// <summary>
+	/// Interaction logic for MainWindow.xaml
+	/// </summary>
+	public partial class MainWindow : Window
+	{
+		public MainWindow()
+		{
+			InitializeComponent();
+		}
 
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+		string DrawingTool = "";
+		private Point currentPoint;
+		private Color color = Colors.Black;
+		private double thickness = 1;
+
+		private void pencil_button_Click(object sender, RoutedEventArgs e)
+		{
+			DrawingTool = "Pencil";
+		}
+
+		private void Canvas_MousenUp(object sender, MouseButtonEventArgs e)
+		{
+			Mouse.OverrideCursor = Cursors.Arrow;
+		}
+
+		private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (e.ButtonState == MouseButtonState.Pressed)
+			{
+				switch (DrawingTool)
+				{
+					case "Pencil":
+						Mouse.OverrideCursor = Cursors.Pen;
+						break;
+				}
+				currentPoint = e.GetPosition(canvas);
+			}
+		}
+
+		private void canvas_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (e.LeftButton == MouseButtonState.Pressed)
+			{
+				switch (DrawingTool)
+				{
+					case "Pencil":
+						{
+							Line line = new Line();
+
+							line.X1 = currentPoint.X;
+							line.Y1 = currentPoint.Y;
+							line.X2 = e.GetPosition(canvas).X;
+							line.Y2 = e.GetPosition(canvas).Y;
+
+							SolidColorBrush brush = new SolidColorBrush();
+							brush.Color = color;
+							line.StrokeThickness = thickness;
+							line.Stroke = brush;
+
+							currentPoint = e.GetPosition(canvas);
+
+							canvas.Children.Add(line);
+						}
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
+		private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+		{
+			color = ColorPicker.SelectedColor.GetValueOrDefault();
+		}
+
+		private void ThicknessChooser_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			try
+			{
+				thickness = Double.Parse(ThicknessChooser.Text.Substring(0,1));
+			}
+			catch (Exception)
+			{
+				thickness = 1;
+			}
+		}
 
 		//void canvas_PointerExited(object sender, Event e)
 		//{
