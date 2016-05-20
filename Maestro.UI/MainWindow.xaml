@@ -7,83 +7,88 @@
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="900">
-	<Grid>
-		<Menu x:Name="menu" Grid.Row="1" VerticalAlignment="Top">
-			<MenuItem Header="File">
-				<MenuItem Header="Open" HorizontalAlignment="Left"/>
-				<MenuItem Header="Save" HorizontalAlignment="Left"/>
-				<Separator />
-				<MenuItem Header="Exit" HorizontalAlignment="Left"/>
-			</MenuItem>
-			<MenuItem Header="Help"/>
-		</Menu>
-		<ToolBarPanel Height="66" Grid.Row="2" VerticalAlignment="Top" Margin="-7,21,0,0">
-			<ToolBar x:Name="toolBar" HorizontalAlignment="Left" Width="879" Height="66" Margin="10,0,0,0">
-				<Grid Width="103" Margin="0,0,0,-2">
-					<Button x:Name="pencil_button" Height="24" Width="24" VerticalAlignment="Top" Margin="7,4,72,0" Click="pencil_button_Click">
-						<Image Source="pack://application:,,,/Resources/pencil.png"/>
-					</Button>
-					<Button x:Name="eraser_button" Height="24" Width="24" VerticalAlignment="Top" Margin="7,33,72,0">
-						<Image Source="pack://application:,,,/Resources/eraser.png"/>
-					</Button>
-					<Button x:Name="button2" Height="24" VerticalAlignment="Top" Width="24" Margin="40,33,39,0">
-						<Image Source="pack://application:,,,/Resources/color-picker.png"/>
-					</Button>
-					<Button x:Name="button3" Height="24" VerticalAlignment="Top" Width="24" Margin="72,4,7,0">
-						<Image Source="pack://application:,,,/Resources/fill.png"/>
-					</Button>
-					<Button x:Name="button4" Height="24" VerticalAlignment="Top" Width="24" Margin="40,4,39,0" RenderTransformOrigin="2.045,1.792">
-						<Image Source="pack://application:,,,/Resources/font.png"/>
-					</Button>
-					<Button x:Name="button5" Height="24" VerticalAlignment="Top" Width="24" Margin="72,33,7,0" RenderTransformOrigin="2.297,1.944">
-						<Image Source="pack://application:,,,/Resources/magnifying-glass.png"/>
-					</Button>
-				</Grid>
-				<Separator/>
-				<Grid Margin="0,0,0,-1" Width="77">
-					<Button x:Name="button12" Height="24" VerticalAlignment="Top" Width="24" Margin="10,5,43,0">
-						<Image Source="pack://application:,,,/Resources/diagonal-line.png"/>
-					</Button>
-					<Button x:Name="button13" Height="24" VerticalAlignment="Top" Width="24" Margin="10,34,43,0">
-						<Image Source="pack://application:,,,/Resources/rectangle.png"/>
-					</Button>
-					<Button x:Name="button14" Height="24" VerticalAlignment="Top" Width="24" Margin="43,5,10,0">
-						<Image Source="pack://application:,,,/Resources/ellipse.png"/>
-					</Button>
-				</Grid>
-				<Separator/>
-				<Grid Width="67">
-					<xctk:ColorPicker x:Name="ColorPicker" SelectedColor="Black" SelectedColorChanged="ColorPicker_SelectedColorChanged" Margin="10,5,10,32"/>
-					<ComboBox x:Name="ThicknessChooser" Height="24" Margin="10,34,0,0" SelectedIndex="0" SelectionChanged="ThicknessChooser_SelectionChanged" VerticalAlignment="Top" HorizontalAlignment="Left" Width="47">
-						<ComboBoxItem Content="1px" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="3px" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="5px" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="8px" HorizontalAlignment="Left" Width="118"/>
-					</ComboBox>
-				</Grid>
-				<Separator/>
-				<Grid Width="147">
-					<ComboBox x:Name="comboBox3" Height="24" Margin="10,5,0,0" SelectedIndex="0" VerticalAlignment="Top" Width="120" HorizontalAlignment="Left">
-						<ComboBoxItem Content="Tahoma" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="Calibri" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="Times New Roman" HorizontalAlignment="Left" Width="118"/>
-					</ComboBox>
-					<ComboBox x:Name="comboBox5" Height="24" Margin="10,33,100,0" SelectedIndex="0" VerticalAlignment="Top">
-						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="10" HorizontalAlignment="Left" Width="118"/>
-					</ComboBox>
-					<Button x:Name="button" Content="B" HorizontalAlignment="Left" Margin="58,33,0,0" VerticalAlignment="Top" Width="24" Height="24"/>
-					<Button x:Name="button1" Content="I" HorizontalAlignment="Left" Margin="82,33,0,0" VerticalAlignment="Top" Width="24" Height="24"/>
-					<Button x:Name="button6" Content="U" HorizontalAlignment="Left" Margin="106,33,0,0" VerticalAlignment="Top" Width="24" Height="24"/>
-				</Grid>
-			</ToolBar>
-		</ToolBarPanel>
-		<Canvas x:Name="canvas" Grid.Row="3" HorizontalAlignment="Left" Height="362" Margin="0,87,0,0" PreviewMouseDown="Canvas_MouseDown" PreviewMouseMove="canvas_MouseMove" PreviewMouseUp="Canvas_MousenUp" VerticalAlignment="Top" Width="892">
-			<Canvas.Background>
-				<SolidColorBrush Color="White"></SolidColorBrush>
-			</Canvas.Background>
-		</Canvas>
-		<StatusBar HorizontalAlignment="Left" Grid.Row="4" Height="20" Margin="0,449,0,0" VerticalAlignment="Top" Width="892"/>
-	</Grid>
+    <Grid Background="AliceBlue">
+        <Menu x:Name="menu" Grid.Row="1" VerticalAlignment="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Open" HorizontalAlignment="Left"/>
+                <MenuItem Header="Save" HorizontalAlignment="Left"/>
+                <Separator />
+                <MenuItem Header="Exit" HorizontalAlignment="Left"/>
+            </MenuItem>
+            <MenuItem Header="Help"/>
+        </Menu>
+        <ToolBarPanel Height="66" Grid.Row="2" VerticalAlignment="Top" Margin="-7,21,0,0">
+            <ToolBar x:Name="toolBar" HorizontalAlignment="Left" Width="879" Height="66" Margin="10,0,0,0">
+                <Grid Width="103" Margin="0,0,0,-2">
+                    <Button x:Name="pencil_button" Height="24" Width="24" VerticalAlignment="Top" Margin="7,4,72,0" Click="pencil_button_Click">
+                        <Image Source="pack://application:,,,/Resources/pencil.png"/>
+                    </Button>
+                    <Button x:Name="eraser_button" Height="24" Width="24" VerticalAlignment="Top" Margin="7,33,72,0" Click="eraser_button_Click">
+                        <Image Source="pack://application:,,,/Resources/eraser.png"/>
+                    </Button>
+                    <Button x:Name="color_picker_button" Height="24" VerticalAlignment="Top" Width="24" Margin="40,33,39,0" Click="color_picker_button_Click">
+                        <Image Source="pack://application:,,,/Resources/color-picker.png"/>
+                    </Button>
+                    <Button x:Name="fill_button" Height="24" VerticalAlignment="Top" Width="24" Margin="72,4,7,0" Click="fill_button_Click">
+                        <Image Source="pack://application:,,,/Resources/fill.png"/>
+                    </Button>
+                    <Button x:Name="text_button" Height="24" VerticalAlignment="Top" Width="24" Margin="40,4,39,0" RenderTransformOrigin="2.045,1.792" Click="text_button_Click">
+                        <Image Source="pack://application:,,,/Resources/font.png"/>
+                    </Button>
+                    <Button x:Name="magnifier_button" Height="24" VerticalAlignment="Top" Width="24" Margin="72,33,7,0" RenderTransformOrigin="2.297,1.944" Click="magnifier_button_Click">
+                        <Image Source="pack://application:,,,/Resources/magnifying-glass.png"/>
+                    </Button>
+                </Grid>
+                <Separator/>
+                <Grid Margin="0,0,0,-1" Width="77">
+                    <Button x:Name="line_button" Height="24" VerticalAlignment="Top" Width="24" Margin="10,5,43,0" Click="line_button_Click">
+                        <Image Source="pack://application:,,,/Resources/diagonal-line.png"/>
+                    </Button>
+                    <Button x:Name="rectangle_button" Height="24" VerticalAlignment="Top" Width="24" Margin="10,34,43,0" Click="rectangle_button_Click">
+                        <Image Source="pack://application:,,,/Resources/rectangle.png"/>
+                    </Button>
+                    <Button x:Name="ellipse_button" Height="24" VerticalAlignment="Top" Width="24" Margin="43,5,10,0" Click="ellipse_button_Click">
+                        <Image Source="pack://application:,,,/Resources/ellipse.png"/>
+                    </Button>
+                </Grid>
+                <Separator/>
+                <Grid Width="67">
+                    <xctk:ColorPicker x:Name="ColorPicker" SelectedColor="Black" SelectedColorChanged="ColorPicker_SelectedColorChanged" Margin="10,5,10,32"/>
+                    <ComboBox x:Name="ThicknessChooser" Height="24" Margin="10,34,0,0" SelectedIndex="0" SelectionChanged="ThicknessChooser_SelectionChanged" VerticalAlignment="Top" HorizontalAlignment="Left" Width="47">
+                        <ComboBoxItem Content="1px" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="3px" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="5px" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="8px" HorizontalAlignment="Left" Width="118"/>
+                    </ComboBox>
+                </Grid>
+                <Separator/>
+                <Grid Width="147">
+                    <ComboBox x:Name="FontPicker" Height="24" Margin="10,5,0,0" SelectedIndex="0" VerticalAlignment="Top" Width="120" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="Tahoma" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="Calibri" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="Times New Roman" HorizontalAlignment="Left" Width="118"/>
+                    </ComboBox>
+                    <ComboBox x:Name="TextSizePicker" Height="24" Margin="10,33,100,0" SelectedIndex="0" VerticalAlignment="Top">
+                        <ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="10" HorizontalAlignment="Left" Width="118"/>
+                    </ComboBox>
+                    <Button x:Name="text_bold_button" Content="B" HorizontalAlignment="Left" Margin="58,33,0,0" VerticalAlignment="Top" Width="24" Height="24"/>
+                    <Button x:Name="text_italic_button" Content="I" HorizontalAlignment="Left" Margin="82,33,0,0" VerticalAlignment="Top" Width="24" Height="24"/>
+                    <Button x:Name="text_underline_button" Content="U" HorizontalAlignment="Left" Margin="106,33,0,0" VerticalAlignment="Top" Width="24" Height="24"/>
+                </Grid>
+            </ToolBar>
+        </ToolBarPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="352" Margin="10,92,0,0" VerticalAlignment="Top" Width="872">
+            <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="600" PreviewMouseDown="Canvas_MouseDown" PreviewMouseMove="canvas_MouseMove" PreviewMouseUp="Canvas_MouseUp" PreviewMouseWheel="canvas_PreviewMouseWheel" VerticalAlignment="Top" Width="1000">
+                <Canvas.Background>
+                    <SolidColorBrush Color="White"></SolidColorBrush>
+                </Canvas.Background>
+                <Canvas.RenderTransform>
+                    <ScaleTransform x:Name="canvas_scale"/>
+                </Canvas.RenderTransform>
+            </Canvas>
+        </ScrollViewer>
+        <StatusBar HorizontalAlignment="Left" Grid.Row="4" Height="20" Margin="0,449,0,0" VerticalAlignment="Top" Width="892"/>
+    </Grid>
 </Window>
