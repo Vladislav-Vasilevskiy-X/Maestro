@@ -32,57 +32,57 @@ namespace Maestro.UI
 			InitializeComponent();
 		}
 
-		private enum Tools { Pencil, Eraser, Magnifier, ColorPicker, Fill, Text, Line, Rectangle, Ellipse }
-		private Tools Tool { get; set; }
+		//private enum Tools { Pencil, Eraser, Magnifier, ColorPicker, Fill, Text, Line, Rectangle, Ellipse }
+		//private Tools Tool { get; set; }
 
 		#region Tools buttons listeners
 
-		private void pencil_button_Click(object sender, RoutedEventArgs e)
-		{
-			this.Tool = Tools.Pencil;
-		}
+		//private void pencil_button_Click(object sender, RoutedEventArgs e)
+		//{
+		//	this.Tool = Tools.Pencil;
+		//}
 
-		private void eraser_button_Click(object sender, RoutedEventArgs e)
-		{
-			this.Tool = Tools.Eraser;
-		}
+		//private void eraser_button_Click(object sender, RoutedEventArgs e)
+		//{
+		//	this.Tool = Tools.Eraser;
+		//}
 
-		private void color_picker_button_Click(object sender, RoutedEventArgs e)
-		{
-			this.Tool = Tools.ColorPicker;
-		}
+		//private void color_picker_button_Click(object sender, RoutedEventArgs e)
+		//{
+		//	this.Tool = Tools.ColorPicker;
+		//}
 
-		private void magnifier_button_Click(object sender, RoutedEventArgs e)
-		{
-			this.Tool = Tools.Magnifier;
-			MessageBox.Show("Press 'W' for zoom in and 'Q' for zoom out.",
-				"instruction");
-		}
+		//private void magnifier_button_Click(object sender, RoutedEventArgs e)
+		//{
+		//	this.Tool = Tools.Magnifier;
+		//	MessageBox.Show("Press 'W' for zoom in and 'Q' for zoom out.",
+		//		"instruction");
+		//}
 
-		private void fill_button_Click(object sender, RoutedEventArgs e)
-		{
-			this.Tool = Tools.Fill;
-		}
+		//private void fill_button_Click(object sender, RoutedEventArgs e)
+		//{
+		//	this.Tool = Tools.Fill;
+		//}
 
-		private void text_button_Click(object sender, RoutedEventArgs e)
-		{
-			this.Tool = Tools.Text;
-		}
+		//private void text_button_Click(object sender, RoutedEventArgs e)
+		//{
+		//	this.Tool = Tools.Text;
+		//}
 
-		private void line_button_Click(object sender, RoutedEventArgs e)
-		{
-			this.Tool = Tools.Line;
-		}
+		//private void line_button_Click(object sender, RoutedEventArgs e)
+		//{
+		//	Utils.Tool = Utils.Tools.Line;
+		//}
 
-		private void ellipse_button_Click(object sender, RoutedEventArgs e)
-		{
-			this.Tool = Tools.Ellipse;
-		}
+		//private void ellipse_button_Click(object sender, RoutedEventArgs e)
+		//{
+  //          Utils.Tool = Utils.Tools.Ellipse;
+		//}
 
-		private void rectangle_button_Click(object sender, RoutedEventArgs e)
-		{
-			this.Tool = Tools.Rectangle;
-		}
+		//private void rectangle_button_Click(object sender, RoutedEventArgs e)
+		//{
+  //          Utils.Tool = Utils.Tools.Rectangle;
+		//}
 
 		#endregion
 
@@ -95,36 +95,36 @@ namespace Maestro.UI
 		{
 			if (e.ButtonState == MouseButtonState.Pressed)
 			{
-				switch (this.Tool)
+				switch (Utils.Tool)
 				{
-					case Tools.Pencil:
+					case Utils.Tools.Pencil:
 						executor.DrawWithPencil(ref canvas, e.GetPosition(canvas));
 						break;
 
-					case Tools.Eraser:
+					case Utils.Tools.Eraser:
 						executor.Erase(ref canvas, e.GetPosition(canvas));
 						break;
 
-					case Tools.ColorPicker:
+					case Utils.Tools.ColorPicker:
 						ColorPicker.SelectedColor = Utils.GetPixelColor(e.GetPosition(canvas), ref canvas);
 						break;
 
-					case Tools.Line:
+					case Utils.Tools.Line:
 						executor.DrawWithLine(ref canvas, e.GetPosition(canvas));
 						break;
 
-					case Tools.Rectangle:
+					case Utils.Tools.Rectangle:
 						executor.DrawWithRectangle(ref canvas, e.GetPosition(canvas));
 						break;
 
-					case Tools.Ellipse:
-						executor.DrawWithRectangle(ref canvas, e.GetPosition(canvas));
+					case Utils.Tools.Ellipse:
+						executor.DrawWithEllipse(ref canvas, e.GetPosition(canvas));
 						break;
 
-					case Tools.Fill:
+					case Utils.Tools.Fill:
 						executor.MakeFloodFill(ref canvas, e.GetPosition(canvas));
 						break;
-					case Tools.Text:
+					case Utils.Tools.Text:
 						executor.DrawText(sender, e.GetPosition(canvas), ref canvas, ref textBox,
 							(FontPicker.SelectedItem as ComboBoxItem).Content as string,
 							(TextSizePicker.SelectedItem as ComboBoxItem).Content as string);
@@ -138,9 +138,9 @@ namespace Maestro.UI
 		{
 			if (e.LeftButton == MouseButtonState.Pressed)
 			{
-				switch (this.Tool)
+				switch (Utils.Tool)
 				{
-					case Tools.Pencil:
+					case Utils.Tools.Pencil:
 						{
 							if (e.LeftButton == MouseButtonState.Pressed)
 							{
@@ -149,7 +149,7 @@ namespace Maestro.UI
 						}
 						break;
 
-					case Tools.Line:
+					case Utils.Tools.Line:
 						{
 							if (e.LeftButton == MouseButtonState.Pressed)
 							{
@@ -158,7 +158,7 @@ namespace Maestro.UI
 						}
 						break;
 
-					case Tools.Rectangle:
+					case Utils.Tools.Rectangle:
 						{
 							if (e.LeftButton == MouseButtonState.Pressed)
 							{
@@ -167,7 +167,7 @@ namespace Maestro.UI
 						}
 						break;
 
-					case Tools.Ellipse:
+					case Utils.Tools.Ellipse:
 						{
 							if (e.LeftButton == MouseButtonState.Pressed)
 							{
@@ -176,7 +176,7 @@ namespace Maestro.UI
 						}
 						break;
 
-					case Tools.Eraser:
+					case Utils.Tools.Eraser:
 						{
 							if (e.LeftButton == MouseButtonState.Pressed)
 							{
@@ -235,7 +235,7 @@ namespace Maestro.UI
 		private void canvas_MouseLeave(object sender, MouseEventArgs e)
 		{
 			Mouse.OverrideCursor = Cursors.Arrow;
-			Position_label.Content = "Position: ";
+			Position_label.Content = "Позиция курсора: ";
 		}
 
 		private void Clear_Screen_menu_item_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -305,5 +305,5 @@ namespace Maestro.UI
 			MessageBox.Show("Created by Vladislav Parkhutich, 2016",
 				"About");
 		}
-	}
+    }
 }

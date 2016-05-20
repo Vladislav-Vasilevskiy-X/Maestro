@@ -11,78 +11,81 @@ using System.Windows.Media.Imaging;
 
 namespace Maestro.UI
 {
-	public static class Utils
-	{
-		public static BitmapImage BitmapToImageSource(System.Drawing.Bitmap bitmap)
-		{
-			using (MemoryStream memory = new MemoryStream())
-			{
-				bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-				memory.Position = 0;
-				BitmapImage bitmapimage = new BitmapImage();
-				bitmapimage.BeginInit();
-				bitmapimage.StreamSource = memory;
-				bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-				bitmapimage.EndInit();
+    public static class Utils
+    {
+        public enum Tools { Pencil, Eraser, Magnifier, ColorPicker, Fill, Text, Line, Rectangle, Ellipse }
+        public static Tools Tool { get; set; }
 
-				return bitmapimage;
-			}
-		}
+        public static BitmapImage BitmapToImageSource(System.Drawing.Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
 
-		public static void BooleanTrigger(ref bool variable)
-		{
-			variable = !variable;
-		}
+                return bitmapimage;
+            }
+        }
 
-		public static System.Drawing.Bitmap GetBitmapFromCanvas(ref Canvas canvas)
-		{
-			Transform transform = canvas.LayoutTransform;
-			canvas.LayoutTransform = null;
-			Size size = new Size(canvas.Width, canvas.Height);
-			canvas.Measure(size);
-			canvas.Arrange(new Rect(size));
-			RenderTargetBitmap renderBitmap =
-			  new RenderTargetBitmap(
-				(int)size.Width,
-				(int)size.Height,
-				96d,
-				96d,
-				PixelFormats.Pbgra32);
-			renderBitmap.Render(canvas);
-			System.Drawing.Bitmap result;
-			using (MemoryStream outStream = new MemoryStream())
-			{
-				PngBitmapEncoder encoder = new PngBitmapEncoder();
-				encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
-				encoder.Save(outStream);
-				result = new System.Drawing.Bitmap(outStream);
-			}
-			canvas.LayoutTransform = transform;
-			return result;
-		}
+        public static void BooleanTrigger(ref bool variable)
+        {
+            variable = !variable;
+        }
 
-		public static Color GetPixelColor(Point point, ref Canvas canvas)
-		{
-			var color = GetBitmapFromCanvas(ref canvas).GetPixel((int)point.X, (int)point.Y);
-			return Color.FromArgb(color.A, color.R, color.G, color.B);
-		}
+        public static System.Drawing.Bitmap GetBitmapFromCanvas(ref Canvas canvas)
+        {
+            Transform transform = canvas.LayoutTransform;
+            canvas.LayoutTransform = null;
+            Size size = new Size(canvas.Width, canvas.Height);
+            canvas.Measure(size);
+            canvas.Arrange(new Rect(size));
+            RenderTargetBitmap renderBitmap =
+              new RenderTargetBitmap(
+                (int)size.Width,
+                (int)size.Height,
+                96d,
+                96d,
+                PixelFormats.Pbgra32);
+            renderBitmap.Render(canvas);
+            System.Drawing.Bitmap result;
+            using (MemoryStream outStream = new MemoryStream())
+            {
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
+                encoder.Save(outStream);
+                result = new System.Drawing.Bitmap(outStream);
+            }
+            canvas.LayoutTransform = transform;
+            return result;
+        }
 
-		public static double GetDistance(double X1, double Y1, double X2, double Y2)
-		{
-			double a = (double)(X2 - X1);
-			double b = (double)(Y2 - Y1);
+        public static Color GetPixelColor(Point point, ref Canvas canvas)
+        {
+            var color = GetBitmapFromCanvas(ref canvas).GetPixel((int)point.X, (int)point.Y);
+            return Color.FromArgb(color.A, color.R, color.G, color.B);
+        }
 
-			return Math.Sqrt(a * a + b * b);
-		}
+        public static double GetDistance(double X1, double Y1, double X2, double Y2)
+        {
+            double a = (double)(X2 - X1);
+            double b = (double)(Y2 - Y1);
 
-		public static System.Drawing.Color GetPixelDrawingColor(ref Canvas canvas, Point point)
-		{
-			return Utils.GetBitmapFromCanvas(ref canvas).GetPixel((int)point.X, (int)point.Y);
-		}
+            return Math.Sqrt(a * a + b * b);
+        }
 
-		public static string ComposePositionLabelContent(Point position)
-		{
-			return "Position: " + position.X + ", " + position.Y + "px";
-		}
-	}
+        public static System.Drawing.Color GetPixelDrawingColor(ref Canvas canvas, Point point)
+        {
+            return Utils.GetBitmapFromCanvas(ref canvas).GetPixel((int)point.X, (int)point.Y);
+        }
+
+        public static string ComposePositionLabelContent(Point position)
+        {
+            return "Позиция курсора: " + position.X + ", " + position.Y + "px";
+        }
+    }
 }
