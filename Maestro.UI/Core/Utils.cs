@@ -79,5 +79,10 @@ namespace Maestro.UI
 		{
 			return Utils.GetBitmapFromCanvas(ref canvas).GetPixel((int)point.X, (int)point.Y);
 		}
+
+		public static string ComposePositionLabelContent(Point position)
+		{
+			return "Position: " + position.X + ", " + position.Y + "px";
+		}
 	}
 }

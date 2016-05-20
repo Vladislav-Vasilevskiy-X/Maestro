@@ -55,6 +55,8 @@ namespace Maestro.UI
 		private void magnifier_button_Click(object sender, RoutedEventArgs e)
 		{
 			this.Tool = Tools.Magnifier;
+			MessageBox.Show("Press 'W' for zoom in and 'Q' for zoom out.",
+				"instruction");
 		}
 
 		private void fill_button_Click(object sender, RoutedEventArgs e)
@@ -187,20 +189,7 @@ namespace Maestro.UI
 						break;
 				}
 			}
-		}
-
-		private void canvas_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-		{
-			//if (e.Delta > 0)
-			//{
-			//	canvas_scale.ScaleX *= ScaleRate;
-			//	canvas_scale.ScaleY *= ScaleRate;
-			//}
-			//else
-			//{
-			//	canvas_scale.ScaleX /= ScaleRate;
-			//	canvas_scale.ScaleY /= ScaleRate;
-			//}
+			Position_label.Content = Utils.ComposePositionLabelContent(e.GetPosition(canvas));
 		}
 
 		private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
@@ -239,21 +228,24 @@ namespace Maestro.UI
 		private void canvas_MouseEnter(object sender, MouseEventArgs e)
 		{
 			Mouse.OverrideCursor = Cursors.Cross;
+			canvas.Focus();
+			Position_label.Content = Utils.ComposePositionLabelContent(e.GetPosition(canvas));
 		}
 
 		private void canvas_MouseLeave(object sender, MouseEventArgs e)
 		{
 			Mouse.OverrideCursor = Cursors.Arrow;
+			Position_label.Content = "Position: ";
 		}
 
 		private void Clear_Screen_menu_item_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			executor.ClearCanvas(ref canvas);
+			executor.ClearCanvas(ref canvas, ref canvas_scale);
 		}
 
 		private void Exit_menu_item_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			executor.ClearCanvas(ref canvas);
+			executor.ClearCanvas(ref canvas, ref canvas_scale);
 			Application.Current.Shutdown();
 		}
 
@@ -284,7 +276,9 @@ namespace Maestro.UI
 			if (dlg.ShowDialog().GetValueOrDefault())
 			{
 				System.Drawing.Bitmap image = new System.Drawing.Bitmap(dlg.FileName);
-				executor.ClearCanvas(ref canvas);
+				executor.ClearCanvas(ref canvas, ref canvas_scale);
+				canvas.Width = image.Width;
+				canvas.Height = image.Height;
 				canvas.Children.Add(new Image() { Source = Utils.BitmapToImageSource(image) });
 			}
 		}
@@ -292,6 +286,24 @@ namespace Maestro.UI
 		private void Undo_menu_item_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			executor.Undo(ref canvas);
+		}
+
+		private void canvas_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.W)
+			{
+				executor.ZoomIn(ref canvas_scale, ref canvas);
+			}
+			if (e.Key == Key.Q)
+			{
+				executor.ZoomOut(ref canvas_scale, ref canvas);
+			}
+		}
+
+		private void About_menu_item_Click(object sender, RoutedEventArgs e)
+		{
+			MessageBox.Show("Created by Vladislav Parkhutich, 2016",
+				"About");
 		}
 	}
 }

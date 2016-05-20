@@ -21,6 +21,10 @@ namespace Maestro.UI
 {
 	public class Executor
 	{
+		private const int DEFAULT_CANVAS_WIDTH = 600;
+		private const int DEFAULT_CANVAS_HEIGHT = 1000;
+		private const double MAX_SCALE = 4;
+		private const double MIN_SCALE = 0.25;
 		public Point CurrentPoint { get; set; }
 		private Point PreviousPoint { get; set; }
 		private Point StartPoint { get; set; }
@@ -47,15 +51,18 @@ namespace Maestro.UI
 			pencil = null;
 		}
 
-		public void ClearCanvas(ref Canvas canvas)
+		public void ClearCanvas(ref Canvas canvas, ref ScaleTransform scale)
 		{
 			canvas.Children.Clear();
+			canvas.Width = DEFAULT_CANVAS_HEIGHT;
+			canvas.Height = DEFAULT_CANVAS_WIDTH;
+			scale.ScaleX = 1;
+			scale.ScaleY = 1;
 			canvas.UpdateLayout();
 		}
 
 		public void DrawWithPencil(ref Canvas canvas, Point mouseCursorPoint)
 		{
-			//this.StartPoint = e.GetPosition(canvas);
 			this.StartPoint = mouseCursorPoint;
 			this.pencil = new Polyline();
 			this.pencil.Stroke = new SolidColorBrush(this.Color);
@@ -188,6 +195,24 @@ namespace Maestro.UI
 			if (lastAddedUiEls.Count > 0)
 			{
 				canvas.Children.Remove(lastAddedUiEls.Pop());
+			}
+		}
+
+		public void ZoomIn(ref ScaleTransform canvasScale, ref Canvas canvas)
+		{
+			if (canvasScale.ScaleX * ScaleRate < MAX_SCALE && canvasScale.ScaleY * ScaleRate < MAX_SCALE)
+			{
+				canvasScale.ScaleX *= ScaleRate;
+				canvasScale.ScaleY *= ScaleRate;
+			}
+		}
+
+		public void ZoomOut(ref ScaleTransform canvasScale, ref Canvas canvas)
+		{
+			if (canvasScale.ScaleX / ScaleRate > MIN_SCALE && canvasScale.ScaleY / ScaleRate > MIN_SCALE)
+			{
+				canvasScale.ScaleX /= ScaleRate;
+				canvasScale.ScaleY /= ScaleRate;
 			}
 		}
 
