@@ -403,15 +403,9 @@ namespace Maestro.UI
         {
             Transform transform = canvas.LayoutTransform;
             canvas.LayoutTransform = null;
-
-            // Get the size of canvas
             Size size = new Size(canvas.Width, canvas.Height);
-            // Measure and arrange the surface
-            // VERY IMPORTANT
             canvas.Measure(size);
             canvas.Arrange(new Rect(size));
-
-            // Create a render bitmap and push the surface to it
             RenderTargetBitmap renderBitmap =
               new RenderTargetBitmap(
                 (int)size.Width,
@@ -420,25 +414,15 @@ namespace Maestro.UI
                 96d,
                 PixelFormats.Pbgra32);
             renderBitmap.Render(canvas);
-
             System.Drawing.Bitmap result;
-
-            // Create a file stream for saving image
             using (MemoryStream outStream = new MemoryStream())
             {
-                // Use png encoder for our data
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
-                // push the rendered bitmap to it
                 encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
-                // save the data to the stream
                 encoder.Save(outStream);
-
                 result = new System.Drawing.Bitmap(outStream);
             }
-
-            // Restore previously saved layout
             canvas.LayoutTransform = transform;
-
             return result;
         }
 

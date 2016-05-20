@@ -23,7 +23,7 @@
             <MenuItem Header="Help"/>
         </Menu>
         <ToolBarPanel Height="66" Grid.Row="2" VerticalAlignment="Top" Margin="-7,21,0,0">
-            <ToolBar x:Name="toolBar" HorizontalAlignment="Left" Width="879" Height="66" Margin="10,0,0,0">
+            <ToolBar x:Name="toolBar" HorizontalAlignment="Left" Width="Auto" Height="66" Margin="10,0,0,0">
                 <Grid Width="103" Margin="0,0,0,-2">
                     <Button x:Name="pencil_button" Height="24" Width="24" VerticalAlignment="Top" Margin="7,4,72,0" Click="pencil_button_Click">
                         <Image Source="pack://application:,,,/Resources/pencil.png"/>
@@ -85,8 +85,8 @@
                 <TextBox x:Name="textBox" Height="61" Margin="0" TextWrapping="Wrap" Text="Smth" VerticalAlignment="Top" Width="223"/>
             </ToolBar>
         </ToolBarPanel>
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="352" Margin="10,92,0,0" VerticalAlignment="Top" Width="872">
-            <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="600" MouseEnter="canvas_MouseEnter" MouseLeave="canvas_MouseLeave" PreviewMouseDown="Canvas_MouseDown" PreviewMouseMove="canvas_MouseMove" PreviewMouseUp="Canvas_MouseUp" VerticalAlignment="Top" Width="1000">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Margin="10,92,0,0"  Width="Auto">
+            <Canvas x:Name="canvas" HorizontalAlignment="Stretch" Height="600" MouseEnter="canvas_MouseEnter" MouseLeave="canvas_MouseLeave" PreviewMouseDown="Canvas_MouseDown" PreviewMouseMove="canvas_MouseMove" PreviewMouseUp="Canvas_MouseUp" VerticalAlignment="Top" Width="1000">
                 <Canvas.Background>
                     <SolidColorBrush Color="White"></SolidColorBrush>
                 </Canvas.Background>
@@ -95,6 +95,5 @@
                 </Canvas.RenderTransform>
             </Canvas>
         </ScrollViewer>
-        <StatusBar HorizontalAlignment="Left" Grid.Row="4" Height="20" Margin="0,449,0,0" VerticalAlignment="Top" Width="892"/>
     </Grid>
 </Window>
