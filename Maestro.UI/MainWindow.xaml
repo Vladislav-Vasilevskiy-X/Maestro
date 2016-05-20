@@ -10,10 +10,15 @@
     <Grid Background="AliceBlue">
         <Menu x:Name="menu" Grid.Row="1" VerticalAlignment="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Open" HorizontalAlignment="Left"/>
-                <MenuItem Header="Save" HorizontalAlignment="Left"/>
+                <MenuItem Name="Open_menu_item" PreviewMouseLeftButtonDown="Open_menu_item_PreviewMouseLeftButtonDown"  Header="Open" HorizontalAlignment="Left"/>
+                <MenuItem Name="Save_menu_item" PreviewMouseLeftButtonDown="Save_menu_item_PreviewMouseLeftButtonDown"  Header="Save" HorizontalAlignment="Left"/>
                 <Separator />
-                <MenuItem Header="Exit" HorizontalAlignment="Left"/>
+                <MenuItem Name="Exit_menu_item"  PreviewMouseLeftButtonDown="Exit_menu_item_MouseLeftButtonDown" Header="Exit" HorizontalAlignment="Left"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Name="Undo_menu_item" PreviewMouseLeftButtonDown="Undo_menu_item_PreviewMouseLeftButtonDown" Header="Undo" HorizontalAlignment="Left"/>
+                <Separator />
+                <MenuItem Name="Clear_Screen_menu_item" Header="Clear screen" PreviewMouseLeftButtonDown="Clear_Screen_menu_item_MouseLeftButtonDown" HorizontalAlignment="Left"/>
             </MenuItem>
             <MenuItem Header="Help"/>
         </Menu>
@@ -69,18 +74,19 @@
                         <ComboBoxItem Content="Times New Roman" HorizontalAlignment="Left" Width="118"/>
                     </ComboBox>
                     <ComboBox x:Name="TextSizePicker" Height="24" Margin="10,33,100,0" SelectedIndex="0" VerticalAlignment="Top">
-                        <ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
-                        <ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
-                        <ComboBoxItem Content="10" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="12" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="24" HorizontalAlignment="Left" Width="118"/>
                     </ComboBox>
-                    <Button x:Name="text_bold_button" Content="B" HorizontalAlignment="Left" Margin="58,33,0,0" VerticalAlignment="Top" Width="24" Height="24"/>
-                    <Button x:Name="text_italic_button" Content="I" HorizontalAlignment="Left" Margin="82,33,0,0" VerticalAlignment="Top" Width="24" Height="24"/>
-                    <Button x:Name="text_underline_button" Content="U" HorizontalAlignment="Left" Margin="106,33,0,0" VerticalAlignment="Top" Width="24" Height="24"/>
+                    <Button x:Name="text_bold_button" Content="B" HorizontalAlignment="Left" Margin="58,33,0,0" VerticalAlignment="Top" Width="24" Height="24" Click="text_bold_button_Click"/>
+                    <Button x:Name="text_italic_button" Content="I" HorizontalAlignment="Left" Margin="82,33,0,0" VerticalAlignment="Top" Width="24" Height="24" Click="text_italic_button_Click"/>
+                    <Button x:Name="text_underline_button" Content="U" HorizontalAlignment="Left" Margin="106,33,0,0" VerticalAlignment="Top" Width="24" Height="24" Click="text_underline_button_Click"/>
                 </Grid>
+                <TextBox x:Name="textBox" Height="61" Margin="0" TextWrapping="Wrap" Text="Smth" VerticalAlignment="Top" Width="223"/>
             </ToolBar>
         </ToolBarPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="352" Margin="10,92,0,0" VerticalAlignment="Top" Width="872">
-            <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="600" PreviewMouseDown="Canvas_MouseDown" PreviewMouseMove="canvas_MouseMove" PreviewMouseUp="Canvas_MouseUp" PreviewMouseWheel="canvas_PreviewMouseWheel" VerticalAlignment="Top" Width="1000">
+            <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="600" MouseEnter="canvas_MouseEnter" MouseLeave="canvas_MouseLeave" PreviewMouseDown="Canvas_MouseDown" PreviewMouseMove="canvas_MouseMove" PreviewMouseUp="Canvas_MouseUp" VerticalAlignment="Top" Width="1000">
                 <Canvas.Background>
                     <SolidColorBrush Color="White"></SolidColorBrush>
                 </Canvas.Background>

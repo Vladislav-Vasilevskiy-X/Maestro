@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Ink;
 using System.Runtime.InteropServices;
 using System.IO;
+using Microsoft.Win32;
 
 namespace Maestro.UI
 {
@@ -43,8 +44,11 @@ namespace Maestro.UI
         private Polyline eraser;
         private Polyline pencil;
         private const double ScaleRate = 1.1;
-        private Polygon fillPolygon;
-        private bool isDrawing = false;
+        private bool boldText = false;
+        private bool italicText = false;
+        private bool underlinedText = false;
+        private Stack<UIElement> lastAddedUiEls = new Stack<UIElement>();
+        //private Stack<UIElementCollection> repeatChildrenInstances = new Stack<UIElementCollection>();
 
         #region Tools buttons listeners
 
@@ -97,76 +101,46 @@ namespace Maestro.UI
 
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            Mouse.OverrideCursor = Cursors.Arrow;
             rectangle = null;
             ellipse = null;
             line = null;
             eraser = null;
             pencil = null;
-
-            //isDrawing = false;
-
-            //if (fillPolygon != null)
-            //{
-            //    fillPolygon.Points.Add(fillPolygon.Points.First());
-            //    fillPolygon.Fill = Brushes.Yellow;
-            //}
         }
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ButtonState == MouseButtonState.Pressed)
             {
-                //if (!isDrawing)
-                //{
-                //    isDrawing = true;
-
-                //    fillPolygon = new Polygon()
-                //    {
-                //        Stroke = Brushes.Black,
-                //        StrokeThickness = 1,
-                //        StrokeMiterLimit = 1,
-                //        StrokeLineJoin = PenLineJoin.Round,
-                //        StrokeStartLineCap = PenLineCap.Round,
-                //        StrokeEndLineCap = PenLineCap.Round
-                //    };
-
-                //    AddPoint(e.GetPosition(canvas));
-                //    canvas.Children.Add(fillPolygon);
-                //}
-
                 switch (this.Tool)
                 {
                     case Tools.Pencil:
                         {
-                            Mouse.OverrideCursor = Cursors.Pen;
                             this.StartPoint = e.GetPosition(canvas);
                             this.pencil = new Polyline();
                             this.pencil.Stroke = new SolidColorBrush(this.Color);
                             this.pencil.StrokeThickness = this.Thickness;
                             canvas.Children.Add(this.pencil);
+                            lastAddedUiEls.Push(this.pencil);
                         }
                         break;
                     case Tools.Eraser:
                         {
-                            Mouse.OverrideCursor = Cursors.Hand;
                             this.StartPoint = e.GetPosition(canvas);
                             this.eraser = new Polyline();
                             this.eraser.Stroke = new SolidColorBrush(Colors.White);
                             this.eraser.StrokeThickness = 10;
                             canvas.Children.Add(this.eraser);
+                            lastAddedUiEls.Push(this.eraser);
                         }
                         break;
                     case Tools.ColorPicker:
                         {
-                            //canvas.Children.;
-                            var point = e.GetPosition(canvas);
-                            ColorPicker.SelectedColor = this.GetPixelColor(point);
+                            ColorPicker.SelectedColor = this.GetPixelColor(e.GetPosition(canvas));
                         }
                         break;
                     case Tools.Line:
                         {
-                            Mouse.OverrideCursor = Cursors.Cross;
                             line = new Line();
                             line.X1 = e.GetPosition(canvas).X;
                             line.Y1 = e.GetPosition(canvas).Y;
@@ -175,12 +149,12 @@ namespace Maestro.UI
                             line.StrokeThickness = this.Thickness;
                             line.Stroke = new SolidColorBrush(this.Color);
                             canvas.Children.Add(line);
+                            lastAddedUiEls.Push(this.line);
                         }
                         break;
 
                     case Tools.Rectangle:
                         {
-                            Mouse.OverrideCursor = Cursors.Cross;
                             rectangle = new Rectangle();
                             X1 = e.GetPosition(canvas).X;
                             Y1 = e.GetPosition(canvas).Y;
@@ -192,11 +166,11 @@ namespace Maestro.UI
                             rectangle.Stroke = new SolidColorBrush(this.Color);
                             //rectangle.Fill = new SolidColorBrush(FillColor);
                             canvas.Children.Add(rectangle);
+                            lastAddedUiEls.Push(rectangle);
                         }
                         break;
                     case Tools.Ellipse:
                         {
-                            Mouse.OverrideCursor = Cursors.Cross;
                             ellipse = new Ellipse();
                             X1 = e.GetPosition(canvas).X;
                             Y1 = e.GetPosition(canvas).Y;
@@ -208,6 +182,17 @@ namespace Maestro.UI
                             ellipse.Stroke = new SolidColorBrush(this.Color);
                             //rectangle.Fill = new SolidColorBrush(FillColor);
                             canvas.Children.Add(ellipse);
+                            lastAddedUiEls.Push(ellipse);
+                        }
+                        break;
+                    case Tools.Fill:
+                        {
+                            this.MakeFloodFill(e.GetPosition(canvas));
+                        }
+                        break;
+                    case Tools.Text:
+                        {
+                            Text(sender, e.GetPosition(canvas));
                         }
                         break;
                 }
@@ -217,11 +202,6 @@ namespace Maestro.UI
 
         private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            //if (isDrawing)
-            //{
-            //    AddPoint(e.GetPosition(canvas));
-            //}
-
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 switch (this.Tool)
@@ -240,7 +220,7 @@ namespace Maestro.UI
                         break;
                     case Tools.Line:
                         {
-                            if (e.LeftButton == MouseButtonState.Pressed)
+                            if (e.LeftButton == MouseButtonState.Pressed && line != null)
                             {
                                 line.X2 = e.GetPosition(canvas).X;
                                 line.Y2 = e.GetPosition(canvas).Y;
@@ -250,7 +230,7 @@ namespace Maestro.UI
 
                     case Tools.Rectangle:
                         {
-                            if (e.LeftButton == MouseButtonState.Pressed)
+                            if (e.LeftButton == MouseButtonState.Pressed && rectangle != null)
                             {
                                 X2 = e.GetPosition(canvas).X;
                                 Y2 = e.GetPosition(canvas).Y;
@@ -270,7 +250,7 @@ namespace Maestro.UI
 
                     case Tools.Ellipse:
                         {
-                            if (e.LeftButton == MouseButtonState.Pressed)
+                            if (e.LeftButton == MouseButtonState.Pressed && ellipse != null)
                             {
                                 X2 = e.GetPosition(canvas).X;
                                 Y2 = e.GetPosition(canvas).Y;
@@ -290,7 +270,7 @@ namespace Maestro.UI
 
                     case Tools.Eraser:
                         {
-                            if (e.LeftButton == MouseButtonState.Pressed)
+                            if (e.LeftButton == MouseButtonState.Pressed && eraser != null)
                             {
                                 var point = e.GetPosition(canvas);
                                 if (this.StartPoint != point && point != null && this.eraser != null)
@@ -347,24 +327,14 @@ namespace Maestro.UI
             return Math.Sqrt(a * a + b * b);
         }
 
-        private void AddPoint(Point value)
+        public void MakeFloodFill(Point canvasMousePoint)
         {
-            if (value.X < (canvas.ActualWidth - 1)
-            && value.Y < (canvas.ActualHeight - 1))
-            {
-                fillPolygon.Points.Add(value);
-            }
-        }
-
-        public void MakeFloodFill(object sender, MouseEventArgs e)
-        {
-            // public void floodFill(BufferedImage image, Point node, Color targetColor, Color replacementColor) {
             System.Drawing.Bitmap image = this.GetBitmapFromCanvas();
             int width = image.Width;
             int height = image.Height;
-            System.Drawing.Color replacementColor = this.GetPixelDrawingColor(e.GetPosition(canvas));
-            Point node = e.GetPosition(canvas);
-            System.Drawing.Color targetColor = System.Drawing.Color.FromArgb(this.Color.A, this.Color.R, this.Color.G, this.Color.B);
+            System.Drawing.Color replacementColor = System.Drawing.Color.FromArgb(this.Color.A, this.Color.R, this.Color.G, this.Color.B);
+            Point node = canvasMousePoint;
+            System.Drawing.Color targetColor = this.GetPixelDrawingColor(canvasMousePoint);
             int target = targetColor.ToArgb();
             if (targetColor != replacementColor)
             {
@@ -411,7 +381,10 @@ namespace Maestro.UI
                     }
                     else noMorePixelsLeft = false;
                 } while (noMorePixelsLeft);
-                canvas.UpdateLayout();
+                Image img = new Image();
+                img.Source = this.BitmapToImageSource(image);
+                canvas.Children.Add(img);
+                lastAddedUiEls.Push(img);
             }
         }
 
@@ -469,52 +442,137 @@ namespace Maestro.UI
             return result;
         }
 
+        private void text_bold_button_Click(object sender, RoutedEventArgs e)
+        {
+            BooleanTrigger(ref boldText);
+        }
 
-        //public Color GetPixelColor(Visual visual, Point pt)
-        //{
-        //    Point ptDpi = getScreenDPI(visual);
+        private void text_italic_button_Click(object sender, RoutedEventArgs e)
+        {
+            BooleanTrigger(ref italicText);
+        }
 
-        //    Size srcSize = VisualTreeHelper.GetDescendantBounds(visual).Size;
+        private void text_underline_button_Click(object sender, RoutedEventArgs e)
+        {
+            BooleanTrigger(ref underlinedText);
+        }
 
-        //    //Viewbox uses values between 0 & 1 so normalize the Rect with respect to the visual's Height & Width
-        //    Rect percentSrcRec = new Rect(pt.X / srcSize.Width, pt.Y / srcSize.Height,
-        //                                  1 / srcSize.Width, 1 / srcSize.Height);
+        private void canvas_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Cross;
+        }
 
-        //    //var bmpOut = new RenderTargetBitmap(1, 1, 96d, 96d, PixelFormats.Pbgra32); //assumes 96 dpi
-        //    var bmpOut = new RenderTargetBitmap((int)(ptDpi.X / 96d),
-        //                                        (int)(ptDpi.Y / 96d),
-        //                                        ptDpi.X, ptDpi.Y, PixelFormats.Default); //generalized for monitors with different dpi
+        private void canvas_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
 
-        //    DrawingVisual dv = new DrawingVisual();
-        //    using (DrawingContext dc = dv.RenderOpen())
-        //    {
-        //        dc.DrawRectangle(new VisualBrush { Visual = visual, Viewbox = percentSrcRec },
-        //                         null, //no Pen
-        //                         new Rect(0, 0, 1d, 1d));
-        //    }
-        //    bmpOut.Render(dv);
+        private void Clear_Screen_menu_item_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.ClearCanvas();
+        }
 
-        //    var bytes = new byte[4];
-        //    int iStride = 4; // = 4 * bmpOut.Width (for 32 bit graphics with 4 bytes per pixel -- 4 * 8 bits per byte = 32)
-        //    bmpOut.CopyPixels(bytes, iStride, 0);
+        private void Exit_menu_item_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.ClearCanvas();
+            Application.Current.Shutdown();
+        }
 
-        //    return Color.FromArgb(bytes[0], bytes[1], bytes[2], bytes[3]);
-        //}
+        private void Text(object sender, Point point)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = textBox.Text;
+            textBox.FontFamily = new FontFamily((FontPicker.SelectedItem as ComboBoxItem).Content as string);
+            try
+            {
+                textBlock.FontSize = Double.Parse((TextSizePicker.SelectedItem as ComboBoxItem).Content as string);
+            }
+            catch (Exception)
+            {
+                textBlock.FontSize = 8;
+            }
+            if (boldText)
+            {
+                textBlock.FontWeight = FontWeights.Bold;
+            }
+            if (italicText)
+            {
+                textBlock.FontStyle = FontStyles.Italic;
+            }
+            if (underlinedText)
+            {
+                textBlock.TextDecorations = TextDecorations.Underline;
+            }
+            textBlock.Foreground = new SolidColorBrush(this.Color);
+            Canvas.SetLeft(textBlock, point.X);
+            Canvas.SetTop(textBlock, point.Y);
+            canvas.Children.Add(textBlock);
+            lastAddedUiEls.Push(textBlock);
+        }
 
-        //public static Point getScreenDPI(Visual v)
-        //{
-        //    //System.Windows.SystemParameters
-        //    PresentationSource source = PresentationSource.FromVisual(v);
-        //    Point ptDpi;
-        //    if (source != null)
-        //    {
-        //        ptDpi = new Point(96.0 * source.CompositionTarget.TransformToDevice.M11,
-        //                           96.0 * source.CompositionTarget.TransformToDevice.M22);
-        //    }
-        //    else
-        //        ptDpi = new Point(96d, 96d); //default value.
+        private void Save_menu_item_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "Untitled";
+            dlg.DefaultExt = ".jpg";
+            dlg.Filter = "Image (.jpg)|*.jpg";
 
-        //    return ptDpi;
-        //}
+            if (dlg.ShowDialog().GetValueOrDefault())
+            {
+                using (FileStream fs = new FileStream(dlg.FileName, FileMode.Create))
+                {
+                    this.GetBitmapFromCanvas().Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg);
+                }
+            }
+        }
+
+        private void Open_menu_item_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Title = "Open Image";
+            dlg.Filter = "Image files (*.bmp)|*.bmp|(*.jpg)|*.jpg|(*.png)|*.png";
+
+            if (dlg.ShowDialog().GetValueOrDefault())
+            {
+                System.Drawing.Bitmap image = new System.Drawing.Bitmap(dlg.FileName);
+                this.ClearCanvas();
+                canvas.Children.Add(new Image() { Source = this.BitmapToImageSource(image) });
+            }
+        }
+
+        private void Undo_menu_item_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (lastAddedUiEls.Count > 0)
+            {
+                canvas.Children.Remove(lastAddedUiEls.Pop());
+            }
+        }
+
+        BitmapImage BitmapToImageSource(System.Drawing.Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+
+                return bitmapimage;
+            }
+        }
+
+        public void BooleanTrigger(ref bool variable)
+        {
+            variable = !variable;
+        }
+
+        public void ClearCanvas()
+        {
+            canvas.Children.Clear();
+            canvas.UpdateLayout();
+        }
     }
 }
