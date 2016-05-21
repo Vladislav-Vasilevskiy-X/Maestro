@@ -24,7 +24,7 @@
             <MenuItem x:Name="About_menu_item" Header="О программе..." Click="About_menu_item_Click"/>
         </Menu>
         <ToolBarPanel Height="66" VerticalAlignment="Top" Margin="-7,29,0,0">
-            <ToolBar x:Name="toolBar" HorizontalAlignment="Left" Width="685" Height="66" Margin="10,0,0,0">
+            <ToolBar x:Name="toolBar" HorizontalAlignment="Left" Width="834" Height="66" Margin="10,0,0,0">
                 <control:Tools/>
                 <Separator/>
                 <control:Shapes Width="79"/>
@@ -39,30 +39,28 @@
                     </ComboBox>
                 </Grid>
                 <Separator/>
-                <Grid Width="147">
+                <Grid Width="286">
                     <ComboBox x:Name="FontPicker" Height="24" Margin="10,5,0,0" SelectedIndex="0" VerticalAlignment="Top" Width="120" HorizontalAlignment="Left">
                         <ComboBoxItem Content="Tahoma" HorizontalAlignment="Left" Width="118"/>
                         <ComboBoxItem Content="Calibri" HorizontalAlignment="Left" Width="118"/>
                         <ComboBoxItem Content="Times New Roman" HorizontalAlignment="Left" Width="118"/>
                     </ComboBox>
-                    <ComboBox x:Name="TextSizePicker" Height="24" Margin="10,33,100,0" SelectedIndex="0" VerticalAlignment="Top">
+                    <ComboBox x:Name="TextSizePicker" Height="24" Margin="10,33,0,0" SelectedIndex="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="37">
                         <ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
                         <ComboBoxItem Content="12" HorizontalAlignment="Left" Width="118"/>
                         <ComboBoxItem Content="24" HorizontalAlignment="Left" Width="118"/>
                     </ComboBox>
-                    <Button x:Name="text_bold_button" Content="B" HorizontalAlignment="Left" Margin="58,33,0,0" VerticalAlignment="Top" Width="24" Height="24" Click="text_bold_button_Click"/>
+                    <Button x:Name="text_bold_button" Content="B" Margin="58,33,0,0" VerticalAlignment="Top" Height="24" Click="text_bold_button_Click" HorizontalAlignment="Left" Width="24"/>
                     <Button x:Name="text_italic_button" Content="I" HorizontalAlignment="Left" Margin="82,33,0,0" VerticalAlignment="Top" Width="24" Height="24" Click="text_italic_button_Click"/>
                     <Button x:Name="text_underline_button" Content="U" HorizontalAlignment="Left" Margin="106,33,0,0" VerticalAlignment="Top" Width="24" Height="24" Click="text_underline_button_Click"/>
+                    <TextBox x:Name="textBox" Height="52" TextWrapping="Wrap" Text="Пример текста" VerticalAlignment="Top" HorizontalAlignment="Left" Width="145" Margin="135,5,0,0"/>
                 </Grid>
                 <Separator/>
-                <Grid Width="240" Height="61" VerticalAlignment="Top">
-                    <TextBox x:Name="textBox" Height="31" TextWrapping="Wrap" Text="Пример текста" VerticalAlignment="Top" HorizontalAlignment="Left" Width="238"/>
-                    <Label x:Name="Position_label" Content="Позиция курсора: " Margin="0,31,0,0" HorizontalAlignment="Left" Width="238"/>
-                </Grid>
+                <control:InfoPanel x:Name="Info_panel"/>
             </ToolBar>
         </ToolBarPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Auto"  Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="Auto" Margin="10,95,0,0"  Width="Auto">
-            <Canvas x:Name="canvas" Focusable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Height="289" PreviewKeyDown="canvas_KeyDown"  MouseEnter="canvas_MouseEnter" MouseLeave="canvas_MouseLeave" PreviewMouseDown="Canvas_MouseDown" PreviewMouseMove="canvas_MouseMove" PreviewMouseUp="Canvas_MouseUp" Width="863">
+            <Canvas x:Name="canvas" Focusable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Height="289" SizeChanged="canvas_SizeChanged" PreviewKeyDown="canvas_KeyDown"  MouseEnter="canvas_MouseEnter" MouseLeave="canvas_MouseLeave" PreviewMouseDown="Canvas_MouseDown" PreviewMouseMove="canvas_MouseMove" PreviewMouseUp="Canvas_MouseUp" Width="863">
                 <Canvas.Background>
                     <SolidColorBrush Color="White"></SolidColorBrush>
                 </Canvas.Background>

@@ -15,6 +15,7 @@ namespace Maestro.UI
     {
         public enum Tools { Pencil, Eraser, Magnifier, ColorPicker, Fill, Text, Line, Rectangle, Ellipse }
         public static Tools Tool { get; set; }
+        public static Executor executor = new Executor();
 
         public static BitmapImage BitmapToImageSource(System.Drawing.Bitmap bitmap)
         {
@@ -85,7 +86,12 @@ namespace Maestro.UI
 
         public static string ComposePositionLabelContent(Point position)
         {
-            return "Позиция курсора: " + position.X + ", " + position.Y + "px";
+            return "Позиция курсора: x:" + Math.Round(position.X,2) + ", y:" + Math.Round(position.Y, 2);
+        }
+
+        public static string ComposeCanvaSizeLabelContent(double canvasWidth, double canvasHeight)
+        {
+            return "Размер изображения: " + canvasWidth + "x" + canvasHeight;
         }
     }
 }
